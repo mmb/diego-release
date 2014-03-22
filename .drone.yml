@@ -2,13 +2,6 @@ image: cloudfoundry/diego-pipeline
 
 env:
   - GOROOT=/usr/local/go
-  - BOSH_USER={{BOSH_USER}}
-  - BOSH_PASSWORD={{BOSH_PASSWORD}}
-  - BOSH_TARGET={{BOSH_TARGET}}
-  - DEPLOYMENT_NAME={{DEPLOYMENT_NAME}}
 
 script:
-  - ./scripts/pipeline
-
-cache:
-  - /tmp/cache
+  - ./scripts/run_integration_tests

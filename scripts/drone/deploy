@@ -17,12 +17,6 @@ RELEASE=$(cd $(dirname $0)/../.. && pwd)
 
 cd $RELEASE
 
-DRONE_DEPLOY_DIR=$(mktemp -d $TMPDIR/drone-deploy.XXXXX)
-
-cd $DRONE_DEPLOY_DIR
-
-ln -s $RELEASE release
-
 cat > .drone.yml <<EOF
 image: cloudfoundry/diego-pipeline
 
@@ -35,7 +29,7 @@ env:
   - DEPLOYMENTS_REPO=${DEPLOYMENTS_REPO}
 
 script:
-  - find .
+  - ./scripts/deploy
 
 cache:
   - /tmp/cache

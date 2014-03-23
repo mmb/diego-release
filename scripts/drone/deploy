@@ -1,0 +1,44 @@
+#!/bin/bash
+
+set -e -x
+
+function abort() {
+  echo "$@" >&2
+  exit 1
+}
+
+[ ! -z "$BOSH_USER" ] || abort 'must set $BOSH_USER'
+[ ! -z "$BOSH_PASSWORD" ] || abort 'must set $BOSH_PASSWORD'
+[ ! -z "$BOSH_TARGET" ] || abort 'must set $BOSH_TARGET'
+[ ! -z "$DEPLOYMENT_NAME" ] || abort 'must set $DEPLOYMENT_NAME'
+[ ! -z "$DEPLOYMENTS_REPO" ] || abort 'must set $DEPLOYMENTS_REPO'
+
+RELEASE=$(cd $(dirname $0)/../.. && pwd)
+
+cd $RELEASE
+
+DRONE_DEPLOY_DIR=$(mktemp -d $TMPDIR/drone-deploy.XXXXX)
+
+cd $DRONE_DEPLOY_DIR
+
+ln -s $RELEASE release
+
+cat > .drone.yml <<EOF
+image: cloudfoundry/diego-pipeline
+
+env:
+  - GOROOT=/usr/local/go
+  - BOSH_USER=${BOSH_USER}
+  - BOSH_PASSWORD=${BOSH_PASSWORD}
+  - BOSH_TARGET=${BOSH_TARGET}
+  - DEPLOYMENT_NAME=${DEPLOYMENT_NAME}
+  - DEPLOYMENTS_REPO=${DEPLOYMENTS_REPO}
+
+script:
+  - cd release && ./scripts/deploy
+
+cache:
+  - /tmp/cache
+EOF
+
+drone build

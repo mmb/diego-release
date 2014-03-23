@@ -35,7 +35,7 @@ env:
   - DEPLOYMENTS_REPO=${DEPLOYMENTS_REPO}
 
 script:
-  - cd release && ./scripts/deploy
+  - find .
 
 cache:
   - /tmp/cache

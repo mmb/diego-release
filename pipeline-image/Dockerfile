@@ -45,3 +45,5 @@ RUN apt-get -y install curl
 # cf (gcf) for cats
 RUN curl -L http://go-cli.s3-website-us-east-1.amazonaws.com/releases/latest/cf-linux-amd64.tgz | tar zxf - -C /usr/bin
 RUN cp /usr/bin/cf /usr/bin/gcf
+
+VOLUME [".", "/workspace"]

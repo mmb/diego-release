@@ -1,5 +1,4 @@
-FROM cloudfoundry/inigo-ci
-
+FROM ubuntu
 VOLUME [".", "/workspace"]
 RUN date > /workspace/date
 RUN apt-get -y install tree

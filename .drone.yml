@@ -1,4 +1,4 @@
-image: cloudfoundry/diego-pipeline
+image: chou/drone_test
 
 env:
   - GOROOT=/usr/local/go
